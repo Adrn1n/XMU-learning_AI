@@ -28,14 +28,15 @@ int main()
         cout << "No solutions!" << endl;
     else
     {
-        cout << "Solution count: " << res.size() << endl;
+        cout << "Solution count: " << res.size() << endl
+             << endl;
         for (auto it = res.begin(); it < res.end(); ++it)
         {
             cout << "Solution " << (it - res.begin()) << ": " << endl;
             PLL left = {n, m};
             for (auto proc = (it->begin()); proc < (it->end()); ++proc)
             {
-                cout << "step " << (proc - (it->begin())) << ": ";
+                cout << "step " << (proc - (it->begin())) << ": " << endl;
                 cout << "trans: " << (proc->first) << ", " << (proc->second) << "; " << "left: " << (left.first -= (proc->first)) << ", " << (left.second -= (proc->second)) << "; " << "right: " << (n - (left.first)) << ", " << (m - (left.second)) << endl;
             }
             cout << endl;
