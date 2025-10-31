@@ -68,9 +68,9 @@ vector<procedure> solve(const long long n, const long long m, const long long k)
                         if ((!(node.st.l_state.first)) && (!(node.st.l_state.second)))
                         {
                             if (isL)
-                                proc.push_back({i, j});
+                                proc.emplace_back(i, j);
                             else
-                                proc.push_back({-i, -j});
+                                proc.emplace_back(-i, -j);
                             solutions.push_back(proc), proc.pop_back();
                         }
                         else
@@ -78,9 +78,9 @@ vector<procedure> solve(const long long n, const long long m, const long long k)
                             if (vis.find(node.st) == vis.end())
                             {
                                 if (isL)
-                                    proc.push_back({i, j});
+                                    proc.emplace_back(i, j);
                                 else
-                                    proc.push_back({-i, -j});
+                                    proc.emplace_back(-i, -j);
                                 vis.insert(node.st), flag = false;
                             }
                         }
@@ -124,7 +124,11 @@ int main()
             cout << "Solution " << (it - res.begin()) << ": " << endl;
             PLL left = {n, m};
             for (auto proc = (it->begin()); proc < (it->end()); ++proc)
-                cout << "step " << (proc - (it->begin())) << ": \t" << "trans: " << (proc->first) << ", " << (proc->second) << ";\t" << "l: " << (left.first -= (proc->first)) << ", " << (left.second -= (proc->second)) << "; " << "r: " << (n - (left.first)) << ", " << (m - (left.second)) << endl;
+            {
+                cout << "step " << (proc - (it->begin())) << ": \t" << "trans: " << (proc->first) << ", " << (proc->second) << ";\t";
+                cout << "l: " << (left.first -= (proc->first)) << ", " << (left.second -= (proc->second)) << "; ";
+                cout << "r: " << (n - (left.first)) << ", " << (m - (left.second)) << endl;
+            }
             cout << endl;
         }
     }
