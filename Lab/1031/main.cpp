@@ -3,6 +3,7 @@
 #include <utility>
 #include <queue>
 #include <set>
+#include <algorithm>
 
 #define N_MOV 4
 
@@ -31,17 +32,17 @@ inline bool isIdxValid(const vector<ll_vec> &Board, const PLL &idx)
     return (idx.first >= 0) && (static_cast<size_t>(idx.first) < (Board.size())) && (idx.second >= 0) && (static_cast<size_t>(idx.second) < ((Board[idx.first].size())));
 }
 
-inline long long calBoardHVal_1(const vector<ll_vec> &Board_cur, const vector<ll_vec> &Board_tar)
+inline long long calBoardHVal_1(const vector<ll_vec> &Board_cur, const vector<ll_vec> &Board_tar, const vector<PLL> &PosMovs)
 {
     long long h_val = -1;
     if (Board_cur.size() == (Board_tar.size()))
     {
         h_val = 0;
-        for (auto it1 = (Board_cur.begin()), it2 = (Board_tar.begin()); it2 < (Board_tar.end()); ++it1, ++it2)
+        for (auto it1 = (Board_cur.begin()), it2 = (Board_tar.begin()); it1 < (Board_cur.end()); ++it1, ++it2)
             if (it1->size() == (it2->size()))
             {
-                for (auto it3 = it1->begin(), it4 = it2->begin(); it3 < (it1->end()); ++it3, ++it4)
-                    if ((*it3) != (*it4))
+                for (auto it3 = (it1->begin()), it4 = (it2->begin()); it3 < (it1->end()); ++it3, ++it4)
+                    if (((*it3) != (*it4)) && (find(PosMovs.begin(), PosMovs.end(), (PLL){it1 - (Board_cur.begin()), it3 - (it1->begin())}) == PosMovs.end()))
                         ++h_val;
             }
             else
@@ -50,9 +51,35 @@ inline long long calBoardHVal_1(const vector<ll_vec> &Board_cur, const vector<ll
     return h_val;
 }
 
-inline long long calBoardHVal_2(const vector<ll_vec> &Board_cur, const vector<ll_vec> &Board_tar)
+inline long long calBoardHVal_2(const vector<ll_vec> &Board_cur, const vector<ll_vec> &Board_tar, const vector<PLL> &PosMovs)
 {
-    auto h_val = -1;
+    long long h_val = -1;
+    if (Board_cur.size() == (Board_tar.size()))
+    {
+        h_val = 0;
+        for (auto it1 = (Board_cur.begin()), it2 = (Board_tar.begin()); it1 < (Board_cur.end()); ++it1, ++it2)
+            if (it1->size() == (it2->size()))
+            {
+                for (auto it3 = (it1->begin()); it3 < (it1->end()); ++it3)
+                    if (find(PosMovs.begin(), PosMovs.end(), (PLL){it1 - (Board_cur.begin()), it3 - (it1->begin())}) == PosMovs.end())
+                    {
+                        long long temp = -1;
+                        for (auto it4 = (Board_tar.begin()); it4 < (Board_tar.end()); ++it4)
+                            for (auto it5 = (it4->begin()); it5 < (it4->end()); ++it5)
+                                if ((*it3) == (*it5))
+                                {
+                                    long long dst = abs((it4 - (Board_tar.begin())) - (it1 - (Board_cur.begin()))) + abs((it5 - (it4->begin())) - (it3 - (it1->begin())));
+                                    temp = ((temp < 0) || (temp > dst)) ? dst : temp;
+                                }
+                        if (temp < 0)
+                            return -1;
+                        else
+                            h_val += temp;
+                    }
+            }
+            else
+                return -1;
+    }
     return h_val;
 }
 
@@ -64,8 +91,8 @@ inline vector<stepT> solve1_bfs(const vector<ll_vec> &Board_ini, const vector<ll
             if (it1->size() != (it2->size()))
                 return {};
         priority_queue<nodeT> Que;
-        nodeT node = {Board_ini, {}, PosMovs, calBoardHVal_1(Board_ini, Board_tar)};
-        // nodeT node = {Board_ini, {}, PosMovs, calBoardHVal_2(Board_ini, Board_tar)};
+        // nodeT node = {Board_ini, {}, PosMovs, calBoardHVal_1(Board_ini, Board_tar, PosMovs)};
+        nodeT node = {Board_ini, {}, PosMovs, calBoardHVal_2(Board_ini, Board_tar, PosMovs)};
         set<vector<ll_vec>> vis = {Board_ini};
         do
         {
@@ -83,7 +110,8 @@ inline vector<stepT> solve1_bfs(const vector<ll_vec> &Board_ini, const vector<ll
                             if (temp.board_cur == Board_tar)
                                 return temp.procs;
                             else
-                                temp.f_val = static_cast<long long>((temp.procs).size()) + calBoardHVal_1(temp.board_cur, Board_tar), Que.push(temp);
+                                // temp.f_val = static_cast<long long>((temp.procs).size()) + calBoardHVal_1(temp.board_cur, Board_tar, temp.posMovs), Que.push(temp);
+                                temp.f_val = static_cast<long long>((temp.procs).size()) + calBoardHVal_2(temp.board_cur, Board_tar, temp.posMovs), Que.push(temp);
                         }
                     }
         } while (!(Que.empty()));
