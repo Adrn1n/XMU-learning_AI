@@ -2,7 +2,7 @@
 #include <vector>
 #include <utility>
 #include <queue>
-#include <set>
+#include <map>
 #include <algorithm>
 
 #define N_MOV 4
@@ -93,7 +93,7 @@ inline vector<stepT> solve1_bfs(const vector<ll_vec> &Board_ini, const vector<ll
         priority_queue<nodeT> Que;
         // nodeT node = {Board_ini, {}, PosMovs, calBoardHVal_1(Board_ini, Board_tar, PosMovs)};
         nodeT node = {Board_ini, {}, PosMovs, calBoardHVal_2(Board_ini, Board_tar, PosMovs)};
-        set<vector<ll_vec>> vis = {Board_ini};
+        map<vector<ll_vec>, long long> vis = {{Board_ini, 0}};
         do
         {
             if (!(Que.empty()))
@@ -105,7 +105,7 @@ inline vector<stepT> solve1_bfs(const vector<ll_vec> &Board_ini, const vector<ll
                     {
                         auto temp = node;
                         swap(temp.board_cur[temp.posMovs[i].first][temp.posMovs[i].second], (temp.board_cur[temp.posMovs[i].first + (Movs[j].first)][temp.posMovs[i].second + (Movs[j].second)])), temp.posMovs[i].first += (Movs[j].first), temp.posMovs[i].second += (Movs[j].second), temp.procs.emplace_back(j, i);
-                        if (vis.insert(temp.board_cur).second)
+                        if ((vis.insert({temp.board_cur, temp.procs.size()}).second) || ((vis[temp.board_cur] > static_cast<long long>(temp.procs.size())) ? (vis[temp.board_cur] = static_cast<long long>(temp.procs.size())) : false))
                         {
                             if (temp.board_cur == Board_tar)
                                 return temp.procs;

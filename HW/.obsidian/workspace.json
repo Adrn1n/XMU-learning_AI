@@ -14,8 +14,8 @@
               "type": "markdown",
               "state": {
                 "file": "1031.md",
-                "mode": "preview",
-                "source": false
+                "mode": "source",
+                "source": true
               },
               "icon": "lucide-file",
               "title": "1031"
