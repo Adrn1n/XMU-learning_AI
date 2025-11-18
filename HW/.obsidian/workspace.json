@@ -8,18 +8,6 @@
         "type": "tabs",
         "children": [
           {
-            "id": "73b3f32e43a60bc8",
-            "type": "leaf",
-            "state": {
-              "type": "image",
-              "state": {
-                "file": "Assets/B7F1AD32A774E14FAA5CA04AD50292C3.png"
-              },
-              "icon": "lucide-image",
-              "title": "B7F1AD32A774E14FAA5CA04AD50292C3"
-            }
-          },
-          {
             "id": "30dbaf756822e103",
             "type": "leaf",
             "state": {
@@ -33,8 +21,7 @@
               "title": "1114"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -185,12 +172,12 @@
   "active": "30dbaf756822e103",
   "lastOpenFiles": [
     "Assets/B7F1AD32A774E14FAA5CA04AD50292C3.png",
+    "Assets/0FFE08DC7C4D5CED55EB32209925E2CE.png",
     "1114.md",
     "Assets/DEF33822EA94FBEE57E44E84909FB921.jpg",
     "1031.md",
     "1024.md",
     "Assets/491A61575957B86A80F68F5F0831EEA0.jpg",
-    "Assets/0FFE08DC7C4D5CED55EB32209925E2CE.png",
     "def33822ea94fbee57e44e84909fb921.jpeg",
     "def33822ea94fbee57e44e84909fb921 1.jpeg",
     "Pasted image 20251026014717.png",
